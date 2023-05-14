@@ -1,7 +1,9 @@
+
+.env
 # Dependency directories
 node_modules/
 jspm_packages/
-.env
+
 # Distribution directories
 dist/
 

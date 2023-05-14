@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 
 //Routes
 import AuthRoute from "./Routes/AuthRoute.js";
-
+import UserRoute from "./Routes/UserRoutes.js";
 const app = express();
 
 //middlewares
@@ -28,3 +28,4 @@ mongoose
 //route usage
 
 app.use("/auth", AuthRoute);
+app.use("/user", UserRoute);
