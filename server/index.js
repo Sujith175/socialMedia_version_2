@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 //Routes
 import AuthRoute from "./Routes/AuthRoute.js";
 import UserRoute from "./Routes/UserRoutes.js";
+import PostRoute from "./Routes/PostRoute.js";
 const app = express();
 
 //middlewares
@@ -29,3 +30,4 @@ mongoose
 
 app.use("/auth", AuthRoute);
 app.use("/user", UserRoute);
+app.use("/post", PostRoute);
