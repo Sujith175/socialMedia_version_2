@@ -5,7 +5,10 @@ import Noti from "../../img/noti.png";
 import Comment from "../../img/comment.png";
 import Setting from "../../img/settings.png";
 import TrendCard from "../TrendCard/TrendCard";
+import { useState } from "react";
+import ShareModal from "../ShareModal/ShareModal";
 const RightSide = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <div className="rightSide">
       <div className="navIcon">
@@ -15,7 +18,10 @@ const RightSide = () => {
         <img src={Comment} alt="" />
       </div>
       <TrendCard />
-      <button className="button r-button">Share</button>
+      <button className="button r-button" onClick={() => setModalOpen(true)}>
+        Share
+      </button>
+      <ShareModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </div>
   );
 };
