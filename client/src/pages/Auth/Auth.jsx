@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import "./Auth.css";
 import Logo from "../../img/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn, signUp } from "../../store/Auth/AuthAction";
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(true);
-
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.authReducer.loading);
+  console.log(loading);
   const [data, setData] = useState({
     firstname: "",
     lastname: "",
@@ -20,13 +24,16 @@ const Auth = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (isSignUp) {
-      if (data.password !== data.confirmPass) {
-        setConfirmPass(false);
-      }
+      data.password === data.confirmPass
+        ? dispatch(signUp(data))
+        : setConfirmPass(false);
+    } else {
+      dispatch(logIn(data));
     }
   };
   const resetForm = () => {
     setConfirmPass(true);
+    setIsSignUp(!isSignUp);
     setData({
       firstname: "",
       lastname: "",
@@ -34,6 +41,9 @@ const Auth = () => {
       confirmPass: "",
       username: "",
     });
+  };
+  const handleFunction = () => {
+    resetForm();
   };
   return (
     <div className="auth">
@@ -56,6 +66,7 @@ const Auth = () => {
                 className="infoInput"
                 name="firstname"
                 onChange={handleChange}
+                value={data.firstname}
               />
               <input
                 type="text"
@@ -63,6 +74,7 @@ const Auth = () => {
                 className="infoInput"
                 name="lastname"
                 onChange={handleChange}
+                value={data.lastname}
               />
             </div>
           )}
@@ -74,6 +86,7 @@ const Auth = () => {
               className="infoInput"
               name="username"
               onChange={handleChange}
+              value={data.username}
             />
           </div>
           <div>
@@ -84,6 +97,7 @@ const Auth = () => {
                 className="infoInput"
                 name="password"
                 onChange={handleChange}
+                value={data.password}
               />
             </div>
             {isSignUp && (
@@ -94,6 +108,7 @@ const Auth = () => {
                   className="infoInput"
                   name="confirmPass"
                   onChange={handleChange}
+                  value={data.confirmPass}
                 />
               </div>
             )}
@@ -113,13 +128,17 @@ const Auth = () => {
           <div>
             <span
               style={{ fontSize: "12px", cursor: "pointer" }}
-              onClick={() => setIsSignUp(!isSignUp)}
+              onClick={handleFunction}
             >
               {isSignUp ? "Already have an account?" : "Don't Have an Account?"}
             </span>
           </div>
-          <button className="button infoButton" type="submit">
-            {isSignUp ? "Sign Up" : "Login"}
+          <button
+            className="button infoButton"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : isSignUp ? "Sign Up" : "Login"}
           </button>
         </form>
       </div>

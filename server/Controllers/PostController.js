@@ -1,7 +1,15 @@
 import PostModel from "../Models/postModel.js";
-
+import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import UserModel from "../Models/userModel.js";
+import { v2 as cloudinary } from "cloudinary";
+
+dotenv.config();
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 //create new post
 
@@ -9,11 +17,26 @@ export const createPost = async (req, res) => {
   const newPost = await new PostModel(req.body);
   try {
     await newPost.save();
-    res.status(200).json("Post Created");
+    res.status(200).json(newPost);
   } catch (error) {
     res.status(500).json(error);
   }
 };
+
+// export const createPost = async (req, res) => {
+//   try {
+//     const { userId, desc, image } = req.body;
+//     const photoUrl = await cloudinary.uploader.upload(image);
+//     const newPost = await PostModel.create({
+//       userId,
+//       desc,
+//       image: photoUrl.url,
+//     });
+//     res.status(201).json({ success: true, data: newPost });
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
 
 //get a post
 
